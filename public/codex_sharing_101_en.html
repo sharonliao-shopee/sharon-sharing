@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharon × Codex | A Practical Sharing for New</title>
+  <style>
+    :root {
+      --shopee: #ee4d2d;
+      --shopee-dark: #d83f23;
+      --ink: #111827;
+      --body: #343434;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --soft-line: #f3b4a6;
+      --soft: #fff7f4;
+      --gray: #f5f6f8;
+      --green: #178a4a;
+      --blue: #1769aa;
+      --gold: #b7791f;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: #e9ebef;
+      color: var(--ink);
+      font-family: var(--font);
+      overflow-x: hidden;
+    }
+
+    .slide-shell {
+      --scale: 1;
+      width: calc(1440px * var(--scale));
+      height: calc(810px * var(--scale));
+      margin: 12px auto 18px;
+      position: relative;
+    }
+
+    .slide {
+      position: relative;
+      width: 1440px;
+      height: 810px;
+      overflow: hidden;
+      transform: scale(var(--scale));
+      transform-origin: top left;
+      background: #fff;
+      padding: 18px 42px 30px;
+      box-shadow: 0 12px 30px rgba(17, 24, 39, .12);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 8px;
+      background: var(--shopee);
+    }
+
+    .brandbar {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 9px; color: var(--shopee); font-size: 22px; font-weight: 800; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 7px; display: grid; place-items: center; color: #fff; background: var(--shopee); font-size: 22px; }
+    .page-label { font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .2px; }
+
+    .eyebrow { margin-top: 7px; color: var(--shopee); font-weight: 800; font-size: 14px; letter-spacing: .7px; text-transform: uppercase; }
+    h1 { margin: 6px 0 7px; font-size: 37px; line-height: 1.35; letter-spacing: -.5px; }
+    h1 .accent { color: var(--shopee); }
+    .subtitle { margin: 0; color: var(--body); font-size: 17px; line-height: 1.65; }
+    .content { margin-top: 20px; }
+
+    .panel {
+      position: relative;
+      border: 1.6px solid var(--soft-line);
+      border-radius: 9px;
+      background: #fff;
+      padding: 19px 20px 16px;
+    }
+    .panel.soft { background: var(--soft); }
+    .panel.gray { border-color: var(--line); background: var(--gray); }
+    .panel.strong { border: 2px solid var(--shopee); }
+    .panel-tab {
+      position: absolute;
+      top: -12px;
+      left: 18px;
+      min-width: 124px;
+      padding: 5px 14px;
+      border-radius: 7px;
+      color: #fff;
+      background: var(--shopee);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    .metric { text-align: center; padding: 12px 14px; border-radius: 8px; background: var(--soft); border: 1px solid var(--soft-line); }
+    .metric strong { display: block; color: var(--shopee); font-size: 34px; line-height: 1; }
+    .metric span { display: block; margin-top: 7px; color: var(--body); font-size: 13px; }
+
+    .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: stretch; }
+    .phase { position: relative; padding: 18px 18px 14px; border: 2px solid var(--shopee); border-radius: 8px; background: #fff; min-height: 143px; }
+    .phase::after { content: "→"; position: absolute; right: -17px; top: 51px; color: var(--shopee); font-size: 25px; font-weight: 800; }
+    .phase:last-child::after { display: none; }
+    .phase.current { background: var(--soft); border-style: dashed; }
+    .phase.high { background: #fff4ef; box-shadow: 0 6px 16px rgba(238,77,45,.12); }
+    .stage { display: inline-flex; padding: 3px 9px; border-radius: 999px; color: var(--shopee); background: var(--soft); border: 1px solid var(--soft-line); font-size: 12px; font-weight: 800; }
+    .phase h3 { margin: 9px 0 6px; font-size: 18px; }
+    .phase p { margin: 0; font-size: 14px; line-height: 1.65; color: var(--body); }
+
+    .collab-card { min-height: 132px; padding: 15px; border-top: 4px solid var(--shopee); border-radius: 7px; background: var(--gray); }
+    .collab-icon { width: 31px; height: 31px; border-radius: 50%; display: grid; place-items: center; background: var(--shopee); color: white; font-weight: 800; font-size: 15px; }
+    .collab-card h3 { margin: 10px 0 5px; font-size: 17px; }
+    .collab-card p { margin: 0; color: var(--body); line-height: 1.65; font-size: 14px; }
+
+    .case-card { min-height: 485px; padding: 20px 20px 15px; border: 1.6px solid var(--soft-line); border-radius: 9px; background: #fff; }
+    .case-card .level { display: inline-flex; padding: 4px 10px; border-radius: 999px; background: var(--soft); color: var(--shopee); font-size: 12px; font-weight: 800; }
+    .case-card h2 { margin: 9px 0 12px; font-size: 21px; line-height: 1.35; }
+    .case-row { padding: 10px 0; border-top: 1px solid var(--line); }
+    .case-row:first-of-type { border-top: 0; }
+    .case-row b { display: block; margin-bottom: 4px; font-size: 13px; color: var(--shopee); }
+    .case-row p { margin: 0; font-size: 14px; line-height: 1.65; color: var(--body); }
+    .case-card.compact { min-height: 474px; }
+    .case-card.compact .case-row { padding: 8px 0; }
+    .case-card.compact .case-row p { font-size: 14px; }
+
+    .high-card { display: grid; grid-template-columns: 160px 1fr; gap: 18px; min-height: 160px; align-items: center; }
+    .high-card .big-step { height: 118px; border-radius: 10px; display: grid; place-items: center; background: var(--shopee); color: white; font-size: 22px; font-weight: 900; text-align: center; line-height: 1.35; }
+    .high-grid { display: grid; grid-template-columns: 1.05fr 1.45fr 1fr; gap: 12px; }
+    .mini-field { padding-left: 12px; border-left: 3px solid var(--soft-line); }
+    .mini-field b { display: block; color: var(--shopee); font-size: 13px; margin-bottom: 5px; }
+    .mini-field p { margin: 0; color: var(--body); font-size: 14px; line-height: 1.65; }
+
+    .takeaway { min-height: 167px; padding: 16px; border-radius: 9px; border: 1.5px solid var(--line); background: #fff; }
+    .takeaway .num { color: var(--shopee); font-size: 27px; font-weight: 900; }
+    .takeaway h3 { margin: 3px 0 8px; font-size: 17px; line-height: 1.35; }
+    .takeaway p { margin: 0; color: var(--body); font-size: 14px; line-height: 1.65; }
+
+    .step-card { position: relative; min-height: 205px; padding: 20px 17px 15px; border: 2px solid var(--shopee); border-radius: 9px; background: #fff; }
+    .step-card::after { content: "→"; position: absolute; right: -18px; top: 82px; z-index: 2; color: var(--shopee); font-size: 27px; font-weight: 900; }
+    .step-card:last-child::after { display: none; }
+    .step-num { width: 40px; height: 40px; border-radius: 9px; display: grid; place-items: center; color: #fff; background: var(--shopee); font-size: 20px; font-weight: 900; }
+    .step-card h3 { margin: 12px 0 8px; font-size: 18px; }
+    .step-card p { margin: 0; color: var(--body); font-size: 13px; line-height: 1.5; }
+
+    .plugin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .plugin-table th { padding: 10px 12px; color: #fff; background: var(--shopee); text-align: left; }
+    .plugin-table td { padding: 11px 12px; border: 1px solid var(--line); vertical-align: top; }
+    .plugin-table td:first-child { font-weight: 800; width: 29%; }
+
+    .prompt {
+      border: 1.4px solid var(--soft-line);
+      border-left: 5px solid var(--shopee);
+      border-radius: 7px;
+      background: var(--soft);
+      padding: 13px 15px;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--body);
+      white-space: pre-line;
+    }
+    .prompt b { color: var(--shopee); }
+
+    .task-card { min-height: 410px; padding: 18px; border-radius: 9px; border: 1.5px solid var(--soft-line); }
+    .task-card h3 { margin: 7px 0 8px; font-size: 19px; }
+    .task-card > p { margin: 0 0 12px; color: var(--body); font-size: 14px; line-height: 1.65; }
+
+    .six-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .instruction { min-height: 80px; border-radius: 8px; background: var(--gray); border: 1px solid var(--line); padding: 12px; }
+    .instruction b { color: var(--shopee); font-size: 13px; }
+    .instruction p { margin: 5px 0 0; color: var(--body); font-size: 14px; line-height: 1.65; }
+
+    .rounds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .round { position: relative; padding: 11px 10px; min-height: 70px; border: 1px solid var(--soft-line); border-radius: 7px; background: var(--soft); }
+    .round::after { content: "›"; position: absolute; right: -7px; top: 19px; color: var(--shopee); font-size: 25px; font-weight: 900; }
+    .round:last-child::after { display: none; }
+    .round b { display: block; color: var(--shopee); font-size: 13px; }
+    .round span { display: block; margin-top: 4px; color: var(--body); font-size: 14px; line-height: 1.65; }
+
+    .method-flow { display: grid; grid-template-columns: 1fr 55px 1fr 55px 1fr 55px 1fr; align-items: center; gap: 8px; }
+    .method-node { min-height: 125px; padding: 16px 12px; border-radius: 9px; border: 1.5px solid var(--soft-line); background: #fff; text-align: center; }
+    .method-node.active { background: var(--soft); border: 2px solid var(--shopee); }
+    .method-node strong { display: block; color: var(--shopee); font-size: 18px; margin-bottom: 8px; }
+    .method-node span { color: var(--body); font-size: 14px; line-height: 1.65; }
+    .arrow { text-align: center; color: var(--shopee); font-size: 29px; font-weight: 900; }
+
+    .source-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; }
+    .source-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; padding: 13px 15px; border: 1px solid var(--line); border-radius: 8px; background: var(--gray); }
+    .source-list .dot { width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--shopee); font-weight: 800; font-size: 12px; }
+    .source-list b { display: block; font-size: 14px; margin-bottom: 3px; }
+    .source-list span { color: var(--body); font-size: 14px; line-height: 1.65; }
+
+    .value-strip {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      bottom: 28px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1.5px solid var(--soft-line);
+      border-radius: 7px;
+      background: var(--soft);
+      font-size: 16px;
+    }
+    .value-strip strong, .diamond { color: var(--shopee); }
+    .foot { position: absolute; left: 42px; right: 42px; bottom: 8px; display: flex; justify-content: space-between; color: #9ca3af; font-size: 12px; font-weight: 700; }
+
+    .nav {
+      position: fixed;
+      right: 20px;
+      bottom: 18px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, .88);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      opacity: .32;
+      transition: opacity .18s ease;
+    }
+    .nav:hover, .nav:focus-within { opacity: .96; }
+    .nav button { width: 30px; height: 30px; border: 0; border-radius: 50%; background: var(--shopee); color: #fff; cursor: pointer; font-size: 17px; }
+    .nav span { min-width: 52px; text-align: center; font-size: 12px; }
+
+    @media print {
+      @page { size: 16in 9in; margin: 0; }
+      body { background: #fff; }
+      .slide-shell { width: 1440px !important; height: 810px !important; margin: 0; page-break-after: always; --scale: 1 !important; }
+      .slide { box-shadow: none; }
+      .nav { display: none; }
+    }
+
+    /* Revised deck structure: cover + aligned title rail + two-level navigation */
+    .content-slide { padding: 0; }
+    .content-slide .brandbar {
+      position: absolute;
+      left: 30px;
+      right: 30px;
+      top: 22px;
+      height: 52px;
+      display: grid;
+      grid-template-columns: 178px minmax(0, 1fr) 190px;
+      gap: 18px;
+      align-items: center;
+      z-index: 4;
+    }
+    .content-slide .brand { grid-column: 1; font-size: 21px; }
+    .content-slide .brand-mark { width: 38px; height: 38px; font-size: 24px; }
+    .content-slide .page-label { grid-column: 3; text-align: right; font-size: 12px; font-weight: 700; line-height: 1.45; }
+    .content-slide > h1 {
+      position: absolute;
+      left: 226px;
+      right: 232px;
+      top: 22px;
+      z-index: 5;
+      margin: 0;
+      font-size: 27px;
+      line-height: 1.3;
+      letter-spacing: -.3px;
+    }
+    .content-slide > .eyebrow { display: none; }
+    .content-slide > .subtitle {
+      position: absolute;
+      left: 226px;
+      right: 38px;
+      top: 102px;
+      margin: 0;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .content-slide > .content {
+      position: absolute;
+      left: 226px;
+      right: 38px;
+      top: 138px;
+      bottom: 88px;
+      margin: 0;
+    }
+    .content-slide .value-strip { left: 226px; right: 38px; bottom: 28px; min-height: 45px; font-size: 14px; }
+    .content-slide .foot { left: 226px; right: 38px; bottom: 8px; }
+    .side-nav {
+      position: absolute;
+      left: 28px;
+      top: 88px;
+      bottom: 28px;
+      width: 170px;
+      z-index: 6;
+      overflow: hidden;
+      padding: 12px 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fafafa;
+    }
+    .toc-group + .toc-group { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--line); }
+    .toc-level-1 {
+      margin: 0 0 5px;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 900;
+      letter-spacing: .25px;
+      text-transform: uppercase;
+    }
+    .toc-group.group-active .toc-level-1 { color: var(--shopee); }
+    .toc-level-2 { display: grid; gap: 2px; }
+    .toc-link {
+      display: block;
+      padding: 5px 7px 5px 10px;
+      border-left: 2px solid #d7d9dd;
+      color: #62656b;
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .toc-link.active {
+      border-left: 4px solid var(--shopee);
+      border-radius: 0 5px 5px 0;
+      background: var(--soft);
+      color: var(--shopee);
+      font-weight: 900;
+    }
+    .content-slide .case-card { min-height: 0; height: 100%; padding: 14px 15px 11px; }
+    .content-slide .case-card h2 { margin: 7px 0 7px; font-size: 17px; }
+    .content-slide .case-row { padding: 6px 0; }
+    .content-slide .case-row b { margin-bottom: 2px; font-size: 13px; }
+    .content-slide .case-row p { font-size: 14px; line-height: 1.65; }
+    .content-slide .case-card.compact { min-height: 0; }
+    .content-slide .case-card.compact .case-row { padding: 5px 0; }
+    .content-slide .case-card.compact .case-row p { font-size: 14px; line-height: 1.65; }
+    .content-slide .phase { min-height: 190px; padding: 18px 15px 14px; }
+    .content-slide .phase p { font-size: 14px; }
+    .cover-slide { padding: 0; background: #fff; }
+    .cover-slide::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      right: -130px;
+      bottom: -240px;
+      width: 720px;
+      height: 720px;
+      border: 110px solid #fff0eb;
+      border-radius: 50%;
+    }
+    .cover-brand { position: absolute; top: 46px; left: 62px; z-index: 2; display: flex; align-items: center; gap: 12px; color: var(--shopee); font-size: 26px; font-weight: 900; }
+    .cover-brand .brand-mark { width: 46px; height: 46px; font-size: 29px; }
+    .cover-kicker { position: absolute; left: 68px; top: 190px; color: var(--shopee); font-size: 17px; font-weight: 900; letter-spacing: 1.6px; }
+    .cover-title { position: absolute; z-index: 2; left: 64px; top: 230px; width: 980px; margin: 0; font-size: 58px; line-height: 1.3; letter-spacing: -1.5px; }
+    .cover-subtitle { position: absolute; z-index: 2; left: 68px; top: 390px; width: 900px; margin: 0; color: var(--body); font-size: 24px; line-height: 1.65; }
+    .cover-meta { position: absolute; z-index: 2; left: 68px; bottom: 92px; display: flex; gap: 48px; color: var(--muted); font-size: 14px; }
+    .cover-meta b { display: block; margin-bottom: 5px; color: var(--ink); font-size: 16px; }
+    .cover-index { position: absolute; right: 68px; bottom: 54px; z-index: 2; color: var(--shopee); font-size: 15px; font-weight: 900; letter-spacing: .8px; }
+    .dense-3 { height: 100%; }
+    .dense-3 .case-card { height: 100%; }
+    .example-line { margin-top: 4px; }
+    .example-line strong { color: var(--ink); }
+
+    /* Global report navigation and floating-slide layout */
+    :root {
+      --navy: #172033;
+      --navy-2: #263248;
+      --ink: #172033;
+      --body: #4b5563;
+      --muted: #8691a3;
+      --line: #e2e8f0;
+      --soft-line: #f4b8aa;
+      --soft: #fff6f2;
+      --gray: #f7f8fa;
+    }
+    body { background: #edf0f4; }
+    .global-sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 100;
+      width: 280px;
+      padding: 30px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      background: var(--navy);
+      border-right: 1px solid rgba(255,255,255,.08);
+      box-shadow: 8px 0 26px rgba(23,32,51,.14);
+    }
+    .global-sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 30px;
+      color: #fff;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: .1px;
+    }
+    .global-sidebar-brand .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      font-size: 22px;
+    }
+    .global-toc { flex: 1; overflow-y: auto; scrollbar-width: thin; }
+    .global-toc-group + .global-toc-group { margin-top: 18px; }
+    .global-toc-title {
+      margin-bottom: 7px;
+      color: #8390a5;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 900;
+      letter-spacing: .55px;
+      text-transform: uppercase;
+    }
+    .global-toc-group.group-active .global-toc-title { color: #ff927d; }
+    .global-toc-links { display: grid; gap: 3px; }
+    .global-toc-link {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: #c7cfdb;
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.5;
+      transition: background .16s ease, color .16s ease, transform .16s ease;
+    }
+    .global-toc-link:hover { color: #fff; background: rgba(255,255,255,.06); transform: translateX(2px); }
+    .global-toc-link.active { color: #fff; background: var(--shopee); font-weight: 800; }
+    .global-sidebar-foot {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      color: #8390a5;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .main-content {
+      width: calc(100% - 280px);
+      margin-left: 280px;
+      padding: 2px 32px 20px;
+    }
+    .slide-shell {
+      margin: 26px auto 38px;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(23,32,51,.14), 0 3px 10px rgba(23,32,51,.08);
+      scroll-margin-top: 24px;
+    }
+    .slide { border-radius: 16px; box-shadow: none; }
+    .slide::before { background: linear-gradient(90deg, var(--shopee) 0 72%, var(--navy) 100%); }
+    .side-nav { display: none !important; }
+    .nav { display: none !important; }
+
+    .grid-2, .grid-3, .grid-4, .grid-5 { gap: 24px; }
+
+    .content-slide > .content { left: 42px; right: 42px; }
+    .content-slide > .subtitle { left: 42px; right: 42px; }
+    .content-slide .value-strip { left: 42px; right: 42px; }
+    .content-slide .foot { left: 42px; right: 42px; }
+
+    .phase { border-color: #d8dee8; background: var(--gray); }
+    .phase.current { border-color: var(--shopee); background: var(--soft); }
+    .phase.high { border-color: var(--navy); background: #f3f5f8; box-shadow: none; }
+    .phase.high .stage { border-color: var(--navy); background: var(--navy); color: #fff; }
+    .case-card { border-color: var(--line); background: var(--gray); }
+    .case-card h2 { color: var(--navy); }
+    .case-row p, .phase p, .takeaway p, .step-card p, .mini-field p, .instruction p, .source-list span { line-height: 1.65; }
+    .example-line {
+      margin-top: 5px !important;
+      padding: 7px 9px;
+      border-left: 3px solid var(--navy);
+      border-radius: 5px;
+      background: #fff;
+    }
+    .high-card { border-color: var(--navy) !important; background: var(--navy) !important; color: #fff; }
+    .high-card h2 { color: #fff; }
+    .high-card .mini-field { padding: 9px 10px; border-radius: 6px; background: rgba(255,255,255,.06); }
+    .high-card .mini-field b { color: #fff; }
+    .high-card .mini-field p { color: #d5dbe5; }
+    .takeaway { border-color: var(--line); border-top: 4px solid var(--navy); background: #fff; }
+    .step-card { border-color: var(--line); background: var(--gray); }
+    .step-num { background: var(--navy); }
+    .plugin-table th { background: var(--navy); }
+    .plugin-table tr:nth-child(even) { background: var(--gray); }
+    .prompt {
+      border-color: var(--line);
+      border-left-color: var(--shopee);
+      background: var(--gray);
+      color: var(--navy);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      line-height: 1.65;
+    }
+    .instruction { border-color: var(--line); background: var(--gray); }
+    .method-node { border-color: var(--line); background: var(--gray); }
+    .method-node strong { color: var(--navy); }
+    .method-node.active { border-color: var(--shopee); background: var(--soft); }
+    .source-list li { border-color: var(--line); background: var(--gray); }
+    .source-list .dot { background: var(--navy); }
+    .value-strip { border-color: #d8dee8; background: #f3f5f8; }
+
+    .cover-slide { background: #fff; }
+    .cover-slide::after { border-color: #edf0f4; }
+    .cover-title { color: var(--navy); }
+    .cover-subtitle { color: var(--body); }
+    .cover-meta { color: var(--muted); }
+    .cover-meta b { color: var(--navy); }
+    .cover-index { color: var(--navy); }
+
+    /* Slide-specific vertical rhythm: keep content centered without stretching cards */
+    .content-slide > .content.grid-2,
+    .content-slide > .content.grid-3,
+    .content-slide > .content.grid-4,
+    .content-slide > .content.grid-5 { align-items: center; }
+    .content-slide .case-card { height: auto; }
+
+    #page-1 .content {
+      display: flex;
+      align-items: center;
+    }
+    #page-1 .roadmap { width: 100%; }
+    #page-1 .phase { min-height: 190px; }
+
+    #page-1-1 .case-card,
+    #page-1-2 .case-card,
+    #page-1-3 .case-card { min-height: 480px; }
+
+    #page-2 .content {
+      top: 168px;
+      bottom: auto;
+      height: 230px;
+      align-items: stretch;
+    }
+    #page-2 .takeaway {
+      min-height: 220px;
+      height: 220px;
+    }
+    #page-2 .slide > .panel.soft {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      top: 430px;
+      margin: 0 !important;
+      padding: 16px 22px !important;
+    }
+
+    #page-3 .content {
+      top: 166px;
+      bottom: auto;
+      height: 240px;
+      align-items: stretch;
+    }
+    #page-3 .step-card {
+      min-height: 230px;
+      height: 230px;
+    }
+    #page-3 .slide > .panel.soft {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      top: 440px;
+      margin: 0 !important;
+    }
+
+    #page-3-1 .content,
+    #page-3-2 .content,
+    #page-3-3 .content,
+    #appendix .content { align-items: center; }
+    #page-3-2 .task-card { height: auto; min-height: 410px; }
+    #page-3-4 .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Readability pass: typography only; all source text remains unchanged */
+    :root {
+      --ink: #0f172a;
+      --body: #334155;
+      --muted: #64748b;
+    }
+    body {
+      color: var(--ink);
+      font-size: 14px;
+      letter-spacing: .01em;
+    }
+    h1, h2, h3 {
+      color: var(--ink);
+      font-weight: 800;
+      line-height: 1.35 !important;
+    }
+    strong, b {
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .content-slide p,
+    .content-slide li,
+    .content-slide td,
+    .content-slide th {
+      color: var(--body);
+      font-size: 14px !important;
+      line-height: 1.65 !important;
+    }
+    .content-slide > .subtitle {
+      color: var(--muted);
+      font-size: 15px !important;
+      font-weight: 600;
+      line-height: 1.6 !important;
+    }
+    .content-slide > h1 {
+      font-size: 27px;
+      line-height: 1.3 !important;
+    }
+    .content-slide .case-card {
+      padding: 18px 20px 16px;
+    }
+    .content-slide .case-card h2 {
+      margin: 8px 0 9px;
+      color: var(--ink);
+      font-size: 20px;
+      line-height: 1.35 !important;
+    }
+    .content-slide .case-row {
+      padding: 7px 0;
+    }
+    .content-slide .case-card.compact .case-row {
+      padding: 7px 0;
+    }
+    .content-slide .case-row b,
+    .mini-field b,
+    .instruction b,
+    .round b {
+      color: var(--shopee);
+      font-size: 13px !important;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .content-slide .case-row p,
+    .content-slide .case-card.compact .case-row p,
+    .phase p,
+    .collab-card p,
+    .takeaway p,
+    .step-card p,
+    .task-card > p,
+    .mini-field p,
+    .instruction p,
+    .round span,
+    .method-node span,
+    .source-list span {
+      color: var(--body);
+      font-size: 14px !important;
+      line-height: 1.65 !important;
+    }
+    .phase h3,
+    .takeaway h3,
+    .step-card h3,
+    .task-card h3 {
+      color: var(--ink);
+      line-height: 1.35 !important;
+    }
+    .page-label,
+    .stage,
+    .case-card .level,
+    .source-list .dot,
+    .foot,
+    .global-toc-title,
+    .global-sidebar-foot,
+    .nav span {
+      font-size: 12px !important;
+      font-weight: 700;
+      line-height: 1.45;
+      letter-spacing: .01em;
+    }
+    .global-toc-link {
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .cover-title {
+      color: var(--ink);
+      line-height: 1.3 !important;
+    }
+    .cover-subtitle {
+      color: var(--body);
+      line-height: 1.65;
+    }
+    .cover-meta,
+    .cover-index,
+    .cover-kicker {
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+    .example-line {
+      padding: 9px 11px;
+    }
+    .prompt {
+      padding: 16px !important;
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: #1e293b;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 14px !important;
+      font-weight: 500;
+      line-height: 1.65 !important;
+      letter-spacing: .01em;
+    }
+    .prompt b {
+      color: var(--shopee);
+      font-weight: 800;
+    }
+    .panel.gray {
+      color: var(--body) !important;
+      font-size: 14px !important;
+      line-height: 1.65 !important;
+    }
+    #page-3-1 .plugin-table span {
+      font-size: 12px !important;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* Final visual polish: layout and typography only */
+    :root {
+      --navy: #0f172a;
+      --navy-2: #1e293b;
+      --ink: #0f172a;
+      --body: #334155;
+      --muted: #64748b;
+      --line: #dbe3ec;
+      --gray: #f7f9fc;
+      --soft: #fff6f2;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+    body {
+      background: #e8edf3;
+      font-family: var(--font);
+      color: var(--ink);
+      letter-spacing: .01em;
+    }
+    .global-sidebar {
+      background: var(--navy);
+      border-right-color: rgba(255,255,255,.08);
+      box-shadow: 10px 0 32px rgba(15,23,42,.16);
+    }
+    .global-sidebar-brand { font-size: 20px; letter-spacing: .01em; }
+    .global-toc-link { border: 1px solid transparent; }
+    .global-toc-link:hover { border-color: rgba(255,255,255,.08); }
+    .global-toc-link.active {
+      border-color: rgba(255,255,255,.12);
+      box-shadow: 0 6px 16px rgba(0,0,0,.16);
+    }
+    .main-content { padding: 4px 36px 28px; }
+    .slide-shell {
+      margin: 28px auto 42px;
+      border: 1px solid rgba(148,163,184,.22);
+      border-radius: 18px;
+      box-shadow: 0 22px 52px rgba(15,23,42,.14), 0 4px 12px rgba(15,23,42,.07);
+    }
+    .slide { border-radius: 18px; }
+    .content-slide > h1 {
+      color: var(--ink);
+      font-weight: 850;
+      letter-spacing: -.02em;
+    }
+    .content-slide > .subtitle {
+      color: var(--muted);
+      letter-spacing: .005em;
+    }
+    .brand, .cover-brand { letter-spacing: -.01em; }
+    .page-label { color: var(--muted); }
+    .case-card,
+    .takeaway,
+    .step-card,
+    .task-card,
+    .panel,
+    .instruction,
+    .method-node,
+    .source-list li {
+      border-radius: 12px;
+      border-color: var(--line);
+    }
+    .case-card,
+    .takeaway,
+    .step-card,
+    .task-card,
+    .source-list li {
+      box-shadow: 0 1px 2px rgba(15,23,42,.04);
+    }
+    .case-row b,
+    .mini-field b,
+    .instruction b,
+    .prompt b { letter-spacing: .01em; }
+    .value-strip {
+      border-radius: 10px;
+      border-color: #d7e0ea;
+      background: #f3f6fa;
+    }
+    .prompt {
+      padding: 16px !important;
+      border: 1px solid #d7e0ea;
+      border-left: 5px solid var(--shopee);
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: var(--navy-2);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 14px !important;
+      font-weight: 500;
+      line-height: 1.65 !important;
+      letter-spacing: .01em;
+    }
+    .plugin-table { font-size: 14px; line-height: 1.6; }
+    .plugin-table th { background: var(--navy); font-weight: 800; }
+    .plugin-table td { border-color: var(--line); }
+
+    /* Slide 8: product screenshot + unchanged plugin guidance */
+    #page-3-1 .plugin-page-layout {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      grid-template-rows: 250px minmax(0, 1fr);
+      grid-template-areas:
+        "visual tests"
+        "table tests";
+      gap: 18px 22px;
+      align-items: stretch;
+    }
+    #page-3-1 .plugin-visual {
+      grid-area: visual;
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid #263244;
+      border-radius: 12px;
+      background: #151419;
+      box-shadow: 0 10px 24px rgba(15,23,42,.16);
+    }
+    #page-3-1 .plugin-visual img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+    #page-3-1 .plugin-table-panel {
+      grid-area: table;
+      align-self: stretch;
+      padding: 12px 16px !important;
+      border-color: #cfd9e5;
+      background: #fff;
+    }
+    #page-3-1 .plugin-table th,
+    #page-3-1 .plugin-table td {
+      padding: 8px 12px;
+    }
+    #page-3-1 .plugin-tests {
+      grid-area: tests;
+      display: grid;
+      gap: 14px;
+      align-content: center;
+    }
+    #page-3-1 .plugin-tests .panel.gray {
+      padding: 15px 16px !important;
+      background: #f8fafc;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .global-sidebar { display: none; }
+      .main-content { width: auto; margin-left: 0; padding: 0; }
+      .slide-shell { margin: 0; border-radius: 0; box-shadow: none; }
+      .slide { border-radius: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <main class="main-content">
+
+  <!-- Cover -->
+  <div class="slide-shell" data-page="0" id="cover">
+    <section class="slide cover-slide">
+      <div class="cover-brand"><span class="brand-mark">S</span><span>Shopee</span></div>
+      <div class="cover-kicker">SHARON × CODEX</div>
+      <h1 class="cover-title">How I worked with Codex<br><span class="accent">over the past four months</span></h1>
+      <p class="cover-subtitle">From simple Q&A and file creation to connected workflows, lightweight tools development, and reusable Skills</p>
+      <div class="cover-meta">
+        <div><b>Audience</b>New</div>
+        <div><b>Period</b>Apr 27–Jul 20, 2026</div>
+        <div><b>Records</b>114 Codex tasks</div>
+      </div>
+      <div class="cover-index">CODEX COLLABORATION NOTES · 2026</div>
+    </section>
+  </div>
+
+  <!-- Page 1 -->
+  <div class="slide-shell" data-page="1" id="page-1">
+    <section class="slide content-slide" data-toc="journey-overview">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 1 · CONCLUSION & JOURNEY</div></header>
+      <div class="eyebrow">Sharon × Codex</div>
+      <h1>Codex | From a Q&A bot to a digital assitant that can <span class="accent">execute, deliver, and codify methods</span></h1>
+      <p class="subtitle">Apr 27–Jul 20, 2026 | 114 traceable tasks, evolving from one-off questions to collaboration on real work</p>
+
+      <div class="content">
+        <div class="roadmap">
+          <div class="phase"><span class="stage">Getting started</span><h3>Q&A and local files creation</h3><p>Understand, compare, and organize information; turn the output into editable local files.</p></div>
+          <div class="phase current"><span class="stage">Foundation</span><h3>Real context and workflows</h3><p>Read complex Google Workspace materials; connect SeaTalk, email, and calendar to create and track actions.</p></div>
+          <div class="phase"><span class="stage">Advanced</span><h3>Lightweight tools development</h3><p>Build HTML pages and lightweight prototypes; use GitHub to manage, update, and validate code.</p></div>
+          <div class="phase high"><span class="stage">Higher leverage</span><h3>Reusable Skills</h3><p>Package proven methods into portable Skills and improve them with references, scripts, and tests.</p></div>
+        </div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>Key shift:</strong><span>Move from “I have an idea” to “I have something people can review, use, and build on.”</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>02 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 1-1 -->
+  <div class="slide-shell" data-page="2" id="page-1-1">
+    <section class="slide content-slide" data-toc="journey-entry">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 1-1 · REAL CASE — ENTRY</div></header>
+      <div class="eyebrow">Real use cases from Sharon’s work</div>
+      <h1>Getting started: From <span class="accent">basic Q&A to local file delivery</span></h1>
+      <p class="subtitle">Start with clear, easy-to-evaluate tasks. Use conversation to solve the problem, then ask Codex for an editable file.</p>
+
+      <div class="content grid-2">
+        <article class="case-card">
+          <span class="level">1.1 | Getting started</span><h2>Basic Q&A</h2>
+          <div class="case-row"><b>How I worked with Codex</b><p>I asked direct questions, then added context over a few rounds to refine the answer.</p></div>
+          <div class="case-row"><b>Real examples</b><p class="example-line"><strong>Compare AI tools:</strong> Codex compared Claude, Claude Code, and OpenClaw by positioning and use case, giving me a quick mental model.</p><p class="example-line"><strong>Learn a new topic:</strong> Codex researched LLM and Agent developments and turned scattered information into clear takeaways.</p></div>
+          <div class="case-row"><b>Capabilities used</b><p>Understand and structure answers; search, compare, and synthesize information.</p></div>
+          <div class="case-row"><b>Core value</b><p>Build context quickly and form an initial point of view.</p></div>
+        </article>
+        <article class="case-card">
+          <span class="level">1.2 | Getting started</span><h2>Create local files</h2>
+          <div class="case-row"><b>How I worked with Codex</b><p>I specified the content, format, and save location, and Codex created the file in my local workspace.</p></div>
+          <div class="case-row"><b>Real examples</b><p class="example-line"><strong>Create work materials:</strong> Codex turned mid-year reviews, team awards, and nomination materials into editable Markdown or Word files.</p><p class="example-line"><strong>Organize and convert files:</strong> Codex converted scattered inputs into structured documents, spreadsheets, and other required formats.</p></div>
+          <div class="case-row"><b>Capabilities used</b><p>Create Markdown, Word, and Excel files; save, edit, and convert them in the requested format.</p></div>
+          <div class="case-row"><b>Core value</b><p>Move from “I have an answer” to “I have a file I can use.”</p></div>
+        </article>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>At this stage:</strong><span>I moved from asking Codex questions to asking it for a concrete deliverable.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>03 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 1-2 -->
+  <div class="slide-shell" data-page="3" id="page-1-2">
+    <section class="slide content-slide" data-toc="journey-foundation">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 1-2 · REAL CASE — FOUNDATION</div></header>
+      <div class="eyebrow">Real use cases from Sharon’s work</div>
+      <h1>Foundation: Connect <span class="accent">real work context and multiple systems for end-to-end workflows</span></h1>
+      <p class="subtitle">Codex enters the real work environment: reading complex sources, connecting systems, and turning information into trackable actions.</p>
+
+      <div class="content grid-2">
+        <article class="case-card compact">
+          <span class="level">1.3 | Foundation</span><h2>Connect Google Workspace for knowledge-intensive tasks</h2>
+          <div class="case-row"><b>How I worked with Codex</b><p>Codex read Docs, Sheets, and Slides, found facts across files, connected the dots, and completed a specific task.</p></div>
+          <div class="case-row"><b>Real examples</b><p class="example-line"><strong>Diana Topic Setup guide:</strong> Codex extracted requirements, steps, and cautions from scattered project materials into one team-ready guide.</p><p class="example-line"><strong>Knowledge-management structure:</strong> Codex reviewed files and folders, identified categories, relationships, and gaps, and proposed a clear structure.</p></div>
+          <div class="case-row"><b>Capabilities used</b><p>Read and search across Google Workspace; synthesize complex material into structured output.</p></div>
+          <div class="case-row"><b>Core value</b><p>Spend less time finding and stitching information together, and put complex knowledge to work.</p></div>
+        </article>
+        <article class="case-card compact">
+          <span class="level">1.4 | Foundation</span><h2>Connect systems for an end-to-end workflow</h2>
+          <div class="case-row"><b>How I worked with Codex</b><p>Codex identified actions from messages, calendars, and work files, then created and tracked follow-ups through scheduled tasks.</p></div>
+          <div class="case-row"><b>Real examples</b><p class="example-line"><strong>Turn messages into actions:</strong> Codex reviewed SeaTalk and email, identified replies, owners, and dates, then used Workspace sources to create action items.</p><p class="example-line"><strong>Track schedules and tasks:</strong> Codex reviewed meetings and travel, prepared actions, and scheduled reminders or progress checks.</p></div>
+          <div class="case-row"><b>Capabilities used</b><p>Connect SeaTalk, email, calendar, and Google Workspace; create actions, follow-ups, and scheduled tasks.</p></div>
+          <div class="case-row"><b>Core value</b><p>Connect “read → identify the action → follow it through” into one workflow.</p></div>
+        </article>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>At this stage:</strong><span>Codex moved from an information assistant to a collaborator that could progress work across systems.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>04 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 1-3 -->
+  <div class="slide-shell" data-page="4" id="page-1-3">
+    <section class="slide content-slide" data-toc="journey-advanced">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 1-3 · REAL CASE — ADVANCED</div></header>
+      <div class="eyebrow">Real use cases from Sharon’s work</div>
+      <h1>Advanced + higher leverage: From <span class="accent">Lightweight tools development</span> to reusable, portable <span class="accent">Skills</span></h1>
+      <p class="subtitle">Codex can build lightweight tools and package proven methods into capabilities that work across tasks and environments.</p>
+
+      <div class="content grid-2">
+        <article class="case-card compact">
+          <span class="level">1.5 | Advanced</span><h2>Lightweight tools development: HTML + GitHub</h2>
+          <div class="case-row"><b>How I worked with Codex</b><p>I described the goal, interactions, and visuals. Codex built the HTML, connected GitHub, and iterated on feedback.</p></div>
+          <div class="case-row"><b>Real examples</b><p class="example-line"><strong>HTML pages and prototypes:</strong> Codex turned ideas such as an executive review Agent and a catch-up page into clickable demos.</p><p class="example-line"><strong>Code management with GitHub:</strong> Codex connected the local project to a repository, then handled updates, versioning, and validation.</p></div>
+          <div class="case-row"><b>Capabilities used</b><p>Write and edit HTML, CSS, and JavaScript; manage, update, and validate code with GitHub.</p></div>
+          <div class="case-row"><b>Core value</b><p>Turn an idea into a prototype people can see, try, and improve—without a heavy development setup.</p></div>
+        </article>
+        <article class="case-card compact">
+          <span class="level">1.6 | Higher leverage</span><h2>Create reusable, portable Skills</h2>
+          <div class="case-row"><b>How I worked with Codex</b><p>I extracted stable inputs, workflow steps, decision criteria, and output formats from repeated tasks, then packaged them as a Skill.</p></div>
+          <div class="case-row"><b>Real examples</b><p class="example-line"><strong>PMO Coordinator:</strong> Codex turned document review, PIC matching, completeness checks, and follow-up rules into a reusable workflow.</p><p class="example-line"><strong>Shopee HTML Skill:</strong> Codex packaged report structure, visual standards, and page components for reuse in new reports and workspaces.</p></div>
+          <div class="case-row"><b>Capabilities used</b><p>Package a personal method as a Skill; bundle references, scripts, and tests for portability and improvement.</p></div>
+          <div class="case-row"><b>Core value</b><p>Turn one successful approach into a repeatable capability that can move with you.</p></div>
+        </article>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>At this stage:</strong><span>Codex helped me build tools and turn personal experience into reusable, portable digital assets.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>05 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 2 -->
+  <div class="slide-shell" data-page="5" id="page-2">
+    <section class="slide content-slide" data-toc="transformation">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 2 · TAKEAWAYS</div></header>
+      <div class="eyebrow">Take away from AI transformation</div>
+      <h1>AI transformation works when <span class="accent">AI enters real work—and the methods are codified as Skills</span></h1>
+      <p class="subtitle">My journey started with concrete tasks, then connected context, tools, deliverables, and reusable capabilities.</p>
+
+      <div class="content grid-5">
+        <article class="takeaway"><div class="num">01</div><h3>Start with real work</h3><p>Write materials, review documents, and analyze data. Real tasks reveal which steps AI can take on.</p></article>
+        <article class="takeaway"><div class="num">02</div><h3>Context sets the ceiling</h3><p>Real documents, data, conversations, and the local workspace make the output relevant to the work.</p></article>
+        <article class="takeaway"><div class="num">03</div><h3>Get to a demo quickly</h3><p>Research, proposals, decks, and prototypes can start with a fast first version, then improve through iteration.</p></article>
+        <article class="takeaway"><div class="num">04</div><h3>Turn experience into assets</h3><p>Rules, processes, analytical methods, and communication preferences can be tested, updated, and reused.</p></article>
+        <article class="takeaway"><div class="num">05</div><h3>Keep judgment with people</h3><p>Codex prepares and executes. People confirm critical numbers, policies, external communication, and decisions.</p></article>
+      </div>
+
+      <div class="panel soft" style="margin-top:24px;padding:18px 22px">
+        <div style="display:grid;grid-template-columns:1fr 70px 1fr 70px 1fr;align-items:center;text-align:center">
+          <div><b style="color:var(--shopee);font-size:19px">Task</b><p style="margin:6px 0 0;font-size:13px;color:var(--body)">One real piece of work</p></div><div class="arrow">→</div>
+          <div><b style="color:var(--shopee);font-size:19px">Workflow</b><p style="margin:6px 0 0;font-size:13px;color:var(--body)">Connect sources and tools</p></div><div class="arrow">→</div>
+          <div><b style="color:var(--shopee);font-size:19px">Capability</b><p style="margin:6px 0 0;font-size:13px;color:var(--body)">Codify Skills and knowledge</p></div>
+        </div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>My takeaway:</strong><span>Make one workflow work end to end, then decide what to reuse, connect, and automate.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>06 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 3 -->
+  <div class="slide-shell" data-page="6" id="page-3">
+    <section class="slide content-slide" data-toc="quick-overview">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 3 · QUICK START</div></header>
+      <div class="eyebrow">Quick Start for New</div>
+      <h1>Start with one small task from your real work and build <span class="accent">your own way of working with Codex</span></h1>
+      <p class="subtitle">You do not need to learn every feature at once. Connect the systems you use most, deliver something useful, and keep what works.</p>
+
+      <div class="content grid-4">
+        <article class="step-card"><div class="step-num">1</div><h3>Install essential plugins</h3><p>Connect your everyday documents, email, and calendar so Codex can read real work materials within your permissions.</p></article>
+        <article class="step-card"><div class="step-num">2</div><h3>Start with a simple task</h3><p>Choose real work already due this week with an easy-to-judge result, such as a brief, option comparison, or action list.</p></article>
+        <article class="step-card"><div class="step-num">3</div><h3>Give clear instructions</h3><p>Define the context, objective, audience, sources, requirements, and boundaries. Confirm the brief, review a first draft, follow up, then finalize.</p></article>
+        <article class="step-card"><div class="step-num">4</div><h3>Codify your method</h3><p>Turn repeated decision criteria and formats into a template, then gradually upgrade it into a reusable Skill.</p></article>
+      </div>
+
+      <div class="panel soft" style="margin-top:24px">
+        <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center">
+          <div class="metric"><strong>30 min</strong><span>Minimum viable first run</span></div>
+          <div style="font-size:14px;line-height:1.65;color:var(--body)"><b style="color:var(--shopee)">Connect Google Drive</b> → Find recent warehouse-capacity analysis → Summarize it in a one-page brief → Ask for the key insights → Add analysis → Generate an HTML report.</div>
+        </div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>Quick Start:</strong><span>Plugins define access. Instructions define the task. Skills define how to do it next time.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>07 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 3-1 -->
+  <div class="slide-shell" data-page="7" id="page-3-1">
+    <section class="slide content-slide" data-toc="quick-plugins">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 3-1 · PLUGINS</div></header>
+      <div class="eyebrow">Quick Start · Step 1</div>
+      <h1>Install essential plugins: Start with <span class="accent">Google Drive, email, and calendar</span></h1>
+      <p class="subtitle">Install only the plugins for systems you use. After authorization, run a read-only task to confirm each connection.</p>
+
+      <div class="content plugin-page-layout">
+        <figure class="plugin-visual"><img src="assets/codex_plugins_google.png" alt="Codex plugin library showing Google Workspace integrations"></figure>
+        <div class="panel strong plugin-table-panel">
+          <table class="plugin-table">
+            <thead><tr><th>Everyday tool</th><th>Install first</th></tr></thead>
+            <tbody>
+              <tr><td>Google Workspace</td><td>Google Drive<br>Gmail<br>Google Calendar</td></tr>
+              <tr><td>Document tools</td><td>Documents<br>Presentations<br>PDF</td></tr>
+              <tr><td>Other systems</td><td>Chrome, GitHub<br><span style="color:var(--muted);font-size:12px">Add only when needed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="plugin-tests">
+          <div class="prompt"><b>Read-only test 1 | Documents</b>
+List the five documents I edited most recently. Return only the file name, last updated time, and link. Do not modify anything.</div>
+          <div class="prompt"><b>Read-only test 2 | Calendar</b>
+Review my calendar for this week. Summarize important meetings, conflicts, and items to prepare. Read only; do not create or change events.</div>
+          <div class="panel gray" style="padding:14px 16px;font-size:13px;line-height:1.5;color:var(--body)"><b style="color:var(--shopee)">Plugin not available yet?</b><br>Upload a file or use locally exported materials. That is enough for a first experience.</div>
+        </div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>Plugins:</strong><span>Let Codex access the systems and source materials you use at work, within your permissions.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>08 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 3-2 -->
+  <div class="slide-shell" data-page="8" id="page-3-2">
+    <section class="slide content-slide" data-toc="quick-tasks">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 3-2 · SMALL TASKS</div></header>
+      <div class="eyebrow">Quick Start · Step 2</div>
+      <h1>Start with a simple task: Choose a real task <span class="accent">already due this week, with an outcome that is easy to evaluate.</span></h1>
+      <p class="subtitle">Complexity matters less than real source material, a clear outcome, and your ability to judge whether the result helps.</p>
+
+      <div class="content grid-3">
+        <article class="task-card"><span class="stage">A</span><h3>One-page project brief</h3><p>See the project context, progress, risks, and decisions needed at a glance.</p><div class="prompt">Review @Project Materials and summarize:
+1. Problem to solve
+2. Current progress and decisions
+3. Risks, dependencies, and gaps
+4. Critical actions for the next two weeks
+5. Decisions I need to make
+
+Every number and conclusion must trace back to a source.</div></article>
+        <article class="task-card"><span class="stage">B</span><h3>Option comparison</h3><p>Compare options on a common basis and make the assumptions behind the recommendation explicit.</p><div class="prompt">Review @Project A and @Project B. Define a common framework, then compare:
+• Benefits and costs
+• Implementation difficulty
+• Risks and prerequisites
+
+Close with your recommendation, assumptions, information gaps, and what the pilot should validate.</div></article>
+        <article class="task-card"><span class="stage">C</span><h3>Meeting action list</h3><p>Turn meeting notes into decisions, actions, PICs, and due dates.</p><div class="prompt">Review @Meeting Transcript and extract:
+• Confirmed decisions
+• Unresolved disagreements
+• Action / PIC / Due date
+• Missing data or materials
+• Items due before the next meeting
+
+If no PIC or date is explicit, mark it “To confirm.”</div></article>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>Choose:</strong><span>Already due this week + real sources + an easy-to-judge result + an output you can use now.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>09 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 3-3 -->
+  <div class="slide-shell" data-page="9" id="page-3-3">
+    <section class="slide content-slide" data-toc="quick-instruction">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 3-3 · CLEAR INSTRUCTION</div></header>
+      <div class="eyebrow">Quick Start · Step 3</div>
+      <h1>Give clear instructions: Define the <span class="accent">context, delivery standard, and boundaries</span></h1>
+      <p class="subtitle">Brief Codex as you would a new colleague: the clearer the context, the more usable the result.</p>
+
+      <div class="content grid-2" style="grid-template-columns:.92fr 1.08fr">
+        <div>
+          <div class="six-grid">
+            <div class="instruction"><b>Context</b><p>Why this is happening</p></div>
+            <div class="instruction"><b>Objective</b><p>What needs to be solved</p></div>
+            <div class="instruction"><b>Audience</b><p>Who will read and decide</p></div>
+            <div class="instruction"><b>Sources</b><p>What Codex should review</p></div>
+            <div class="instruction"><b>Requirements</b><p>Length, structure, format</p></div>
+            <div class="instruction"><b>Boundaries</b><p>What not to assume</p></div>
+          </div>
+        </div>
+
+        <div class="prompt" style="font-size:14px;min-height:362px"><b>Full example | Executive project update</b>
+
+<b>Context:</b> We want to propose a new project to leadership, but the supporting materials are scattered.
+
+<b>Objective:</b> Help leaders understand in 10 minutes why we should do it, the proposal, and the support needed.
+
+<b>Sources:</b> Review the project brief, research notes, and available data.
+
+<b>Requirements:</b> Start with a storyline of no more than five slides. Use a conclusion-led title on each slide. Build the full content after I confirm it.
+
+<b>Boundaries:</b> Do not invent data. Flag anything unverified. Ask before editing the source file or sending anything externally.
+
+When complete, review it from a leader’s perspective: Which claims lack evidence, and which questions are most likely to come up?</div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>How to collaborate:</strong><span>Give clear instructions, but do not try to make the first prompt perfect.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>10 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Page 3-4 -->
+  <div class="slide-shell" data-page="10" id="page-3-4">
+    <section class="slide content-slide" data-toc="quick-method">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">PAGE 3-4 · METHOD → SKILL</div></header>
+      <div class="eyebrow">Quick Start · Step 4</div>
+      <h1>Start codifying your method: From repeated instructions to a <span class="accent">reusable Skill</span></h1>
+      <p class="subtitle">After three to five similar tasks, capture stable inputs, steps, decision criteria, output formats, and human checkpoints.</p>
+
+      <div class="content">
+        <div class="method-flow">
+          <div class="method-node"><strong>Real tasks</strong><span>Complete several similar tasks</span></div><div class="arrow">→</div>
+          <div class="method-node"><strong>Repeated preferences</strong><span>Find what you keep emphasizing</span></div><div class="arrow">→</div>
+          <div class="method-node"><strong>Template / SOP</strong><span>Fix the inputs, steps, sources, and output</span></div><div class="arrow">→</div>
+          <div class="method-node active"><strong>Skill</strong><span>Package, run, and improve the method</span></div>
+        </div>
+
+        <div class="grid-2" style="margin-top:20px;grid-template-columns:1.15fr .85fr">
+          <div class="prompt"><b>Turn experience into a template</b>
+Review the similar tasks we completed recently and extract the points I repeatedly emphasized:
+1. Required inputs
+2. Analysis or execution steps
+3. Decision criteria
+4. Output format
+5. Boundaries that require human confirmation
+
+Turn them into a reusable template and flag anything that still needs my confirmation.</div>
+          <div class="panel soft" style="padding:16px 18px">
+            <h3 style="margin:0 0 12px;font-size:18px">What's the difference between Plugins and Skills?</h3>
+            <div style="display:grid;gap:11px">
+              <div class="mini-field"><b>Plugin</b><p>Plugins provide reusable instructions and tool connections.</p></div>
+              <div class="mini-field"><b>Skill</b><p>Skills define repeatable methods for specific types of work.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>Natural path:</strong><span>Start small, use it on real work, and keep the methods that prove effective.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>11 / 12</span></div>
+    </section>
+  </div>
+
+  <!-- Appendix -->
+  <div class="slide-shell" data-page="11" id="appendix">
+    <section class="slide content-slide" data-toc="appendix">
+      <header class="brandbar"><div class="brand"><span class="brand-mark">S</span><span>Shopee</span></div><div class="page-label">APPENDIX · SOURCE NOTES</div></header>
+      <div class="eyebrow">Appendix</div>
+      <h1>Source and data notes</h1>
+      <p class="subtitle">This report is based on traceable Codex task records and workspace outputs on Sharon’s local machine.</p>
+
+      <div class="content grid-2" style="grid-template-columns:1.05fr .95fr">
+        <ul class="source-list">
+          <li><span class="dot">1</span><div><b>Observation period</b><span>Apr 27–Jul 20, 2026, covering approximately 12 traceable weeks.</span></div></li>
+          <li><span class="dot">2</span><div><b>How tasks were counted</b><span>The 114 records include short tests, repeated iterations, derived tasks, and renamed tasks—not 114 complete projects.</span></div></li>
+          <li><span class="dot">3</span><div><b>Main sources</b><span>Task index, first requests, archived conversations, plus Markdown, PPT, HTML, Skills, scripts, and test outputs in the workspace.</span></div></li>
+          <li><span class="dot">4</span><div><b>Case authenticity</b><span>Every use case comes from real work. Internal details are limited to the context needed to understand the capability.</span></div></li>
+        </ul>
+
+        <div>
+          <div class="panel strong soft" style="padding:22px">
+            <h3 style="margin:0 0 14px;font-size:20px">Actual outputs covered</h3>
+            <div class="grid-2" style="gap:9px">
+              <div class="instruction"><b>Business</b><p>Proposals, analysis, PMO, writing</p></div>
+              <div class="instruction"><b>Artifacts</b><p>PPT、HTML、Excel、DOCX</p></div>
+              <div class="instruction"><b>Execution</b><p>Scripts, configuration, integrations, troubleshooting</p></div>
+              <div class="instruction"><b>Reusable</b><p>Skills, Agents, rules, knowledge bases</p></div>
+            </div>
+          </div>
+          <div class="panel gray" style="margin-top:14px;padding:16px 18px;font-size:14px;line-height:1.65;color:var(--body)"><b style="color:var(--shopee)">Note</b><br>This report reflects Sharon’s own working experience and judgment. It is a peer-to-peer sharing document, not a universal implementation standard.</div>
+        </div>
+      </div>
+      <footer class="value-strip"><span class="diamond">◆</span><strong>Thanks</strong><span>Start small, work on something real, and keep what works.</span></footer>
+      <div class="foot"><span>Sharon × Codex</span><span>12 / 12</span></div>
+    </section>
+  </div>
+
+  </main>
+
+  <nav class="nav" aria-label="Slide navigation">
+    <button id="prev" aria-label="Previous slide">‹</button>
+    <span id="counter">1 / 12</span>
+    <button id="next" aria-label="Next slide">›</button>
+  </nav>
+
+  <script>
+    const shells = Array.from(document.querySelectorAll('.slide-shell'));
+    const counter = document.getElementById('counter');
+    let current = 0;
+
+    const tocGroups = [
+      {
+        title: '01 · Real use cases from Sharon’s work',
+        items: [
+          ['journey-overview', 'Journey overview', 1],
+          ['journey-entry', 'Getting started', 2],
+          ['journey-foundation', 'Foundation', 3],
+          ['journey-advanced', 'Advanced + higher leverage', 4]
+        ]
+      },
+      {
+        title: '02 · AI Transformation',
+        items: [['transformation', 'Takeaways', 5]]
+      },
+      {
+        title: '03 · Quick Start for New',
+        items: [
+          ['quick-overview', 'Quick Start overview', 6],
+          ['quick-plugins', 'Install essential plugins', 7],
+          ['quick-tasks', 'Start with a small task', 8],
+          ['quick-instruction', 'Give clear instructions', 9],
+          ['quick-method', 'Codify your method', 10]
+        ]
+      },
+      {
+        title: 'Appendix',
+        items: [['appendix', 'Source and data notes', 11]]
+      }
+    ];
+
+    const globalSidebar = document.createElement('aside');
+    globalSidebar.className = 'global-sidebar';
+    globalSidebar.setAttribute('aria-label', 'Report navigation');
+    globalSidebar.innerHTML = `
+      <div class="global-sidebar-brand"><span class="brand-mark">S</span><span>Sharon × Codex</span></div>
+      <nav class="global-toc">
+        <div class="global-toc-group" data-group="cover">
+          <div class="global-toc-title">Overview</div>
+          <div class="global-toc-links"><a class="global-toc-link active" href="#cover" data-index="0">Cover</a></div>
+        </div>
+        ${tocGroups.map(group => {
+          const links = group.items.map(([, label, index]) =>
+            `<a class="global-toc-link" href="#${shells[index].id}" data-index="${index}">${label}</a>`
+          ).join('');
+          return `<div class="global-toc-group"><div class="global-toc-title">${group.title}</div><div class="global-toc-links">${links}</div></div>`;
+        }).join('')}
+      </nav>
+      <div class="global-sidebar-foot">Apr 27–Jul 20, 2026<br>114 traceable task records</div>`;
+    document.body.insertBefore(globalSidebar, document.querySelector('.main-content'));
+
+    document.addEventListener('click', event => {
+      const link = event.target.closest('.global-toc-link');
+      if (!link) return;
+      event.preventDefault();
+      go(Number(link.dataset.index));
+    });
+
+    function fitSlides() {
+      const scale = Math.min(1, Math.max(.3, (window.innerWidth - 344) / 1440), (window.innerHeight - 52) / 810);
+      shells.forEach(shell => shell.style.setProperty('--scale', scale.toFixed(4)));
+    }
+
+    function go(index) {
+      current = Math.max(0, Math.min(shells.length - 1, index));
+      shells[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      counter.textContent = `${current + 1} / ${shells.length}`;
+    }
+
+    document.getElementById('prev').addEventListener('click', () => go(current - 1));
+    document.getElementById('next').addEventListener('click', () => go(current + 1));
+    document.addEventListener('keydown', event => {
+      if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); go(current + 1); }
+      if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); go(current - 1); }
+      if (event.key === 'Home') { event.preventDefault(); go(0); }
+      if (event.key === 'End') { event.preventDefault(); go(shells.length - 1); }
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      current = shells.indexOf(visible.target);
+      counter.textContent = `${current + 1} / ${shells.length}`;
+      document.querySelectorAll('.global-toc-link').forEach(link => {
+        link.classList.toggle('active', Number(link.dataset.index) === current);
+      });
+      document.querySelectorAll('.global-toc-group').forEach(group => {
+        group.classList.toggle('group-active', Boolean(group.querySelector('.global-toc-link.active')));
+      });
+    }, { threshold: [0.35, 0.6, 0.85] });
+    shells.forEach(shell => observer.observe(shell));
+
+    window.addEventListener('resize', fitSlides);
+    fitSlides();
+  </script>
+</body>
+</html>
